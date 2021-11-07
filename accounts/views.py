@@ -28,17 +28,18 @@ def products(request):
 
 #
 def customers(request, pk_test):
-    customers = Customer.objects.get(id=pk_test)
+    customer = Customer.objects.get(id=pk_test)
 
-    orders = customers.order_set.all()
+    orders = customer.order_set.all()
     orders_count = orders.count()
 
-    context = {'customers': customers , 'orders':orders,
+    context = {'customer': customer , 'orders':orders,
                'orders_count': orders_count}
     return render(request, 'accounts/customers.html', context)
 
 
-def createOrder(request):
+def createOrder(request,user_id):
+    customer = Customer.objects.get(id=user_id)
 
     form = OrderForm()
     if request.method == 'POST':
