@@ -1,12 +1,32 @@
 from django import forms
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.forms import inlineformset_factory
 
 from .models import *
-from .forms import OrderForm
-
+from .forms import OrderForm, CreateUserForm
 from .filters import OrderFilter
+
+from django.contrib.auth.forms import UserCreationForm
+
+
+def registerPage(request):
+    form = CreateUserForm()
+
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+    context = {'form' : form}
+    return render(request, 'accounts/register.html', context)
+
+
+def loginPage(request):
+    context = {}
+    return render(request, 'accounts/login.html', context)
+
 
 def home(request):
     orders = Order.objects.all()
@@ -18,7 +38,7 @@ def home(request):
     delivered = orders.filter(status='Delivered').count()
     pending = orders.filter(status='Pending').count()
 
-    context = {'orders': orders,'customers': customers,
+    context = {'orders': orders, 'customers': customers,
                'total_orders': total_orders, 'delivered': delivered,
                'pending': pending}
     return render(request, 'accounts/dashboard.html', context)
@@ -41,31 +61,30 @@ def customers(request, pk_test):
 
     orders = myFilter.qs
 
-    context = {'customer': customer , 'orders':orders,
-               'orders_count': orders_count, 'myFilter':myFilter}
+    context = {'customer': customer, 'orders': orders,
+               'orders_count': orders_count, 'myFilter': myFilter}
     return render(request, 'accounts/customers.html', context)
 
 
-def createOrder(request,user_id):
+def createOrder(request, user_id):
     OrderFormSet = inlineformset_factory(Customer, Order, fields=('product', 'status'))
     customer = Customer.objects.get(id=user_id)
     # formset = OrderFormSet(instance=customer)
-    form = OrderForm(initial={'customer':customer })
+    form = OrderForm(initial={'customer': customer})
     if request.method == 'POST':
-        print('Printing post',request.POST)
+        print('Printing post', request.POST)
         form = OrderForm(request.POST)
         # formset = OrderForm(request.POST, instance=customer)
         if form.is_valid():
             form.save()
             return redirect('/')
 
-    context= {'form': form}
+    context = {'form': form}
     # context= {'formset': formset }
-    return render(request, 'accounts/order_form.html',context)
+    return render(request, 'accounts/order_form.html', context)
 
 
 def updateOrder(request, user_id):
-
     order = Order.objects.get(id=user_id)
     form = OrderForm(instance=order)
 
@@ -75,19 +94,15 @@ def updateOrder(request, user_id):
             form.save()
             return redirect('/')
 
-
     context = {'form': form}
     return render(request, 'accounts/order_form.html', context)
 
 
-
-def deleteOrder(request,user_id):
+def deleteOrder(request, user_id):
     order = Order.objects.get(id=user_id)
     if request.method == 'POST':
-            order.delete()
-            return redirect('/')
+        order.delete()
+        return redirect('/')
 
-    context= {'order': order}
-    return render(request, 'accounts/delete.html',context)
-
-
+    context = {'order': order}
+    return render(request, 'accounts/delete.html', context)
