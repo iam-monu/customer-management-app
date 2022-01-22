@@ -8,6 +8,7 @@ import accounts
 urlpatterns = [
     path('register/', views.registerPage, name="register"),
     path('login/', views.loginPage, name="login"),
+    path('logout/', views.logoutUser, name="logout"),
 
     path('', accounts.views.home, name="home"),
     path('products/', accounts.views.products, name="products"),
