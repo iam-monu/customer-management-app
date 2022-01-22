@@ -2,7 +2,8 @@
 ![Screenshot (501)](https://user-images.githubusercontent.com/69475573/150648491-c40a3531-7d7c-4c96-a5ca-9d7977c5abe6.png)
 
 # Login page
-![Screenshot (502)](https://user-images.githubusercontent.com/69475573/150648494-c7ed101c-4d85-45a4-adb4-3aaddfc71957.png)
+![Screenshot (503)](https://user-images.githubusercontent.com/69475573/150648619-4f82bc5e-7cc7-46dd-a4cf-780b7b048c00.png)
+
 
 # customer-management-app
 ![Screenshot (500)](https://user-images.githubusercontent.com/69475573/150648096-07e6619f-8610-4c44-8c71-81571ec87a13.png)
