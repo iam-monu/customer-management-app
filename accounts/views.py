@@ -1,4 +1,3 @@
-import imp
 from django import forms
 
 from django.shortcuts import render, redirect
@@ -13,6 +12,8 @@ from django.contrib.auth.forms import UserCreationForm
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout 
+
+from django.contrib.auth.decorators import login_required
 
 def registerPage(request):
     form = CreateUserForm()
@@ -51,6 +52,7 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
+@login_required(login_url='login')
 def home(request):
     orders = Order.objects.all()
     customers = Customer.objects.all()
@@ -66,7 +68,7 @@ def home(request):
                'pending': pending}
     return render(request, 'accounts/dashboard.html', context)
 
-
+@login_required(login_url='login')
 def products(request):
     products = Product.objects.all()
 
@@ -74,6 +76,7 @@ def products(request):
 
 
 #
+@login_required(login_url='login')
 def customers(request, pk_test):
     customer = Customer.objects.get(id=pk_test)
 
@@ -88,7 +91,7 @@ def customers(request, pk_test):
                'orders_count': orders_count, 'myFilter': myFilter}
     return render(request, 'accounts/customers.html', context)
 
-
+@login_required(login_url='login')
 def createOrder(request, user_id):
     OrderFormSet = inlineformset_factory(Customer, Order, fields=('product', 'status'))
     customer = Customer.objects.get(id=user_id)
@@ -106,7 +109,7 @@ def createOrder(request, user_id):
     # context= {'formset': formset }
     return render(request, 'accounts/order_form.html', context)
 
-
+@login_required(login_url='login')
 def updateOrder(request, user_id):
     order = Order.objects.get(id=user_id)
     form = OrderForm(instance=order)
@@ -120,7 +123,7 @@ def updateOrder(request, user_id):
     context = {'form': form}
     return render(request, 'accounts/order_form.html', context)
 
-
+@login_required(login_url='login')
 def deleteOrder(request, user_id):
     order = Order.objects.get(id=user_id)
     if request.method == 'POST':
