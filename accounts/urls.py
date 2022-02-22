@@ -11,6 +11,7 @@ urlpatterns = [
     path('logout/', views.logoutUser, name="logout"),
 
     path('', accounts.views.home, name="home"),
+    path('user/', accounts.views.userPage, name="user-page"),
     path('products/', accounts.views.products, name="products"),
     path('customer/<str:pk_test>/', views.customers, name="customer"),
 

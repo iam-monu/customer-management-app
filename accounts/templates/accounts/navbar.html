@@ -14,13 +14,13 @@
 <nav class="navbar navbar-light bg-dark fixed-top">
   <div class="container-fluid">
 <!--    <img src="{% static 'images/logo.png' %}">-->
-
+  {% if request.user.is_staff %}
     <a id="hello-msg" href="{% url 'home' %}">home</a>
     
     <a id="hello-msg" href="{% url 'products' %}">Products</a>
-    
-  <span id="hello-msg">Hello {{request.user}}!  <a href="{% url 'logout' %}">Logout</a></span>
-
+  {% endif %}  
+  <span id="hello-msg">Hello, {{request.user}}!  <a href="{% url 'logout' %}">Logout</a></span>
+  
     
   </div>
   </nav>
